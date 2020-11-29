@@ -15,7 +15,6 @@ namespace Bibliotheque
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -27,15 +26,15 @@ namespace Bibliotheque
             {
                 var errorInfo = lastErrorInfo.GetBaseException();
                 if (errorInfo is HttpException error)
-                    isNotFound = error.GetHttpCode() == (int)HttpStatusCode.NotFound;
+                    isNotFound = error.GetHttpCode() == (int) HttpStatusCode.NotFound;
             }
+
             if (isNotFound)
             {
                 Server.ClearError();
-                Response.Redirect("~/Home/Error");// Do what you need to render in view
+                Response.Redirect("~/Home/Error"); // Do what you need to render in view
             }
         }
-
     }
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]

@@ -1,6 +1,12 @@
-﻿@model Bibliotheque.Models.User
+﻿@using System.Web.DynamicData
+@using System.Web.UI.WebControls
+@using Bibliotheque.Models
+@using Bibliotheque.ViewModels
+@model BibliothequeViewModel
 
 @{
+    var obj = Session["User"] as User;
+
     Layout = null;
 }
 
@@ -10,11 +16,33 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Main</title>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Mail</th>
+        </tr>
+        <tr>
+            <td>@obj.Name</td>
+            <td>@obj.Email</td>
+        </tr>
+    </table>
+
 </head>
+
+@Html.DropDownListFor(m => m.CatsVM.Categories, 
+    new SelectList(Model.CatsVM.Categories.Select(c => c.Title)).OrderBy(s => s.Text),"Select a category")
+
 <body>
+
+
     <div>
-        <label> @ViewBag.Id</label>
-        <label> @ViewBag.Name</label>
+        <button onclick="location.href = '@Url.Action("Create", "Categories")';return false;">Add a Category</button>
     </div>
+
+    <div>
+        <button onclick="location.href = '@Url.Action("Disconnect", "Home")';return false;">Log out</button>
+    </div>
+
 </body>
 </html>

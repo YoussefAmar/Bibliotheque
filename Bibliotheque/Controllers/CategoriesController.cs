@@ -55,7 +55,7 @@ namespace Bibliotheque.Controllers
             {
                 db.Categories.Add(category);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Main", "Home");
             }
 
             return View(category);
