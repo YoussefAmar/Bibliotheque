@@ -1,6 +1,4 @@
-﻿@using System.Web.DynamicData
-@using System.Web.UI.WebControls
-@using Bibliotheque.Models
+﻿@using Bibliotheque.Models
 @using Bibliotheque.ViewModels
 @model BibliothequeViewModel
 
@@ -30,11 +28,27 @@
 
 </head>
 
-@Html.DropDownListFor(m => m.CatsVM.Categories, 
-    new SelectList(Model.CatsVM.Categories.Select(c => c.Title)).OrderBy(s => s.Text),"Select a category")
+@{
+    List<SelectListItem> CategoriesList = new List<SelectListItem>();
+
+    foreach (Category c in Model.CatsVM.Categories)
+    {
+        CategoriesList.Add(new SelectListItem { Text = c.Title, Value = c.IdCategory.ToString()});
+    }
+
+}
+
+
+@Html.DropDownListFor(m => m.CatsVM.Categories,
+    CategoriesList.OrderBy(k => k.Text),
+    "Select a category", htmlAttributes: new { @id = "dropdown" })
 
 <body>
 
+    <div id="element_list_container">
+        List of elements :
+
+    </div>
 
     <div>
         <button onclick="location.href = '@Url.Action("Create", "Categories")';return false;">Add a Category</button>
@@ -46,3 +60,28 @@
 
 </body>
 </html>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script> //Script en ajax pour modifier dynamiquement l'affichage
+
+    $('#dropdown').change(function (e) {
+
+        var row_num = $("#dropdown option:selected").val();
+
+        $.ajax({
+            type: "GET",
+            url: "../Elements/List",
+            data: { id: row_num },
+            success: function(data) {
+                $("#element_list_container").html(data);
+            },
+
+            error: function () { alert("Something went wrong in controller."); }
+
+        });
+
+    });
+
+</script>

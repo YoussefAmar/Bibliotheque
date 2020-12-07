@@ -7,12 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Bibliotheque.Models;
+using Bibliotheque.ViewModels;
 
 namespace Bibliotheque.Controllers
 {
     public class ElementsController : Controller
     {
         private ElementContext db = new ElementContext();
+        private readonly BibliothequeViewModel ViewModel = new BibliothequeViewModel();
 
         // GET: Elements
         [NoDirectAccess]
@@ -118,6 +120,17 @@ namespace Bibliotheque.Controllers
             db.Elements.Remove(element);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+         public ActionResult List(string id)
+        {
+
+            Int32.TryParse(id, out var CatTemp);
+
+            var elementlist = ViewModel.ElemsVM.Elements.Where(e => e.IdCategory.Equals(CatTemp));
+
+            return PartialView("Index", elementlist);
+            
         }
 
         protected override void Dispose(bool disposing)
