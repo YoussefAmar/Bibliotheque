@@ -38,10 +38,8 @@
 
 }
 
-
 @Html.DropDownListFor(m => m.CatsVM.Categories,
-    CategoriesList.OrderBy(k => k.Text),
-    "Select a category", htmlAttributes: new { @id = "dropdown" })
+    CategoriesList.OrderBy(k => k.Text),htmlAttributes: new { @id = "dropdown" })
 
 <body>
 
@@ -65,6 +63,24 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 <script> //Script en ajax pour modifier dynamiquement l'affichage
+
+    $('#dropdown').ready(function (e) {
+
+        var row_num = $("#dropdown option:selected").val();
+
+        $.ajax({
+            type: "GET",
+            url: "../Elements/List",
+            data: { id: row_num },
+            success: function (data) {
+                $("#element_list_container").html(data);
+            },
+
+            error: function () { alert("Something went wrong in controller."); }
+
+        });
+
+    });
 
     $('#dropdown').change(function (e) {
 

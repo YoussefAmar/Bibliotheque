@@ -63,8 +63,9 @@
 </div>
     }
 
+    
     <div>
-        @Html.ActionLink("Create account", "Create")
+        <button onclick="location.href = '@Url.Action("Create", "Users")';return false;">Create an account</button>
     </div>
 </body>
 </html>

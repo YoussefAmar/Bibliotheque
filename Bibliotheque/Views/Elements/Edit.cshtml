@@ -51,8 +51,12 @@
         </div>
     }
     
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+<div>
+    @{ Html.RenderAction("Index_Partial", "Categories");}
+</div>
+
+<div>
+    @Html.ActionLink("Back to the main page", "Main", "Home")
+</div>
 </body>
 </html>

@@ -2,122 +2,74 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Bibliotheque.Models;
+using Bibliotheque.ViewModels;
 
 namespace Bibliotheque.Controllers
 {
     public class LinksController : Controller
     {
         private LinkContext db = new LinkContext();
+        private BibliothequeViewModel vm = new BibliothequeViewModel();
 
-        // GET: Links
         [NoDirectAccess]
-        public ActionResult Index()
+        public ActionResult Index_Partial(int? id)
         {
-            return View(db.Links.ToList());
+            var userSearch = (User)Session["User"];
+
+            IEnumerable<Link> Links = db.Links.Where(l => l.IdUser == userSearch.IdUser && id == l.IdElement).ToList();
+
+            return PartialView("Index_Partial", Links);
         }
 
-        // GET: Links/Details/5
-        [NoDirectAccess]
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Link link = db.Links.Find(id);
-            if (link == null)
-            {
-                return HttpNotFound();
-            }
-            return View(link);
-        }
-
-        // GET: Links/Create
         [NoDirectAccess]
         public ActionResult Create()
         {
-            return View();
-        }
+            var userSearch = (User) Session["User"];
 
-        // POST: Links/Create
-        // Afin de déjouer les attaques par survalidation, activez les propriétés spécifiques auxquelles vous voulez établir une liaison. Pour 
-        // plus de détails, consultez https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdLink,IdUser,IdElement,Done")] Link link)
-        {
-            if (ModelState.IsValid)
+            if (TempData["IdElement"] != null && userSearch != null)
             {
-                db.Links.Add(link);
+                db.Links.Add(new Link { Done = DateTime.Now, IdUser = userSearch.IdUser, IdElement = (int) TempData["IdElement"] });
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-
-            return View(link);
+                
+            return RedirectToAction("Main", "Home");
         }
 
-        // GET: Links/Edit/5
         [NoDirectAccess]
-        public ActionResult Edit(int? id)
+        public ActionResult Details()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Link link = db.Links.Find(id);
-            if (link == null)
-            {
-                return HttpNotFound();
-            }
-            return View(link);
+            TempData["Userlist"] = vm.UsersVM.Users.ToList();
+
+            TempData["Element"] = vm.ElemsVM.Elements.FirstOrDefault(e => e.IdElement == (int) TempData["IdElement"])?.Content;
+
+            return View("Details", vm);
         }
 
-        // POST: Links/Edit/5
-        // Afin de déjouer les attaques par survalidation, activez les propriétés spécifiques auxquelles vous voulez établir une liaison. Pour 
-        // plus de détails, consultez https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdLink,IdUser,IdElement,Done")] Link link)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(link).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(link);
-        }
-
-        // GET: Links/Delete/5
         [NoDirectAccess]
-        public ActionResult Delete(int? id)
+        public ActionResult Delete()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Link link = db.Links.Find(id);
-            if (link == null)
-            {
-                return HttpNotFound();
-            }
-            return View(link);
-        }
+            var userSearch = (User)Session["User"];
 
-        // POST: Links/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Link link = db.Links.Find(id);
-            db.Links.Remove(link);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (TempData["IdElement"] != null && userSearch != null)
+            {
+                var link = (db.Links.AsEnumerable() 
+                            ?? Array.Empty<Link>())
+                    .LastOrDefault(l => l.IdUser == userSearch.IdUser && l.IdElement == (int) TempData["IdElement"]);
+
+                if (link != null)
+                {
+                    db.Links.Remove(link);
+                    db.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Main", "Home");
         }
 
         protected override void Dispose(bool disposing)

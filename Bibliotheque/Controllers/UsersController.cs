@@ -102,7 +102,7 @@ namespace Bibliotheque.Controllers
             {
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Main", "Home");
             }
             return View(user);
         }

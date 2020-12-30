@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Bibliotheque.Models.Link>
+
+@if (Model.Any())
+{
+    
+   @Html.Label("Done : ") 
+}
+
+@foreach (var item in Model)
+{
+    <td>
+        @Html.DisplayFor(modelItem => item.Done) |
+    </td>
+}
+

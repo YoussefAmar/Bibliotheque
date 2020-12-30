@@ -65,8 +65,10 @@
         </div>
     }
     
-    <div>
-        @Html.ActionLink("Login", "Login")
-    </div>
+    
+<div>
+    <button onclick="location.href = '@Url.Action("Login", "Home")';return false;">Add a Category</button>
+</div>
+
 </body>
 </html>

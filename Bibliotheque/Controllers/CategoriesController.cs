@@ -21,6 +21,12 @@ namespace Bibliotheque.Controllers
             return View(db.Categories.ToList());
         }
 
+        [NoDirectAccess]
+        public ActionResult Index_Partial()
+        {
+            return PartialView("Index_Partial",db.Categories.ToList());
+        }
+
         // GET: Categories/Details/5
         [NoDirectAccess]
         public ActionResult Details(int? id)

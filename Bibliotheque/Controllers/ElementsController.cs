@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 using Bibliotheque.Models;
@@ -15,28 +16,13 @@ namespace Bibliotheque.Controllers
     {
         private ElementContext db = new ElementContext();
         private readonly BibliothequeViewModel ViewModel = new BibliothequeViewModel();
+        private static int IdCategory;
 
         // GET: Elements
         [NoDirectAccess]
         public ActionResult Index()
         {
-            return View(db.Elements.ToList());
-        }
-
-        // GET: Elements/Details/5
-        [NoDirectAccess]
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Element element = db.Elements.Find(id);
-            if (element == null)
-            {
-                return HttpNotFound();
-            }
-            return View(element);
+            return View();
         }
 
         // GET: Elements/Create
@@ -51,16 +37,17 @@ namespace Bibliotheque.Controllers
         // plus de détails, consultez https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdElement,IdCategory,Content")] Element element)
+        public ActionResult Create([Bind(Include = "Content")] string Content)
         {
             if (ModelState.IsValid)
             {
-                db.Elements.Add(element);
+
+                db.Elements.Add(new Element{IdCategory = IdCategory, Content = Content});
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Main", "Home");
             }
 
-            return View(element);
+            return View();
         }
 
         // GET: Elements/Edit/5
@@ -90,7 +77,7 @@ namespace Bibliotheque.Controllers
             {
                 db.Entry(element).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Main","Home");
             }
             return View(element);
         }
@@ -119,19 +106,40 @@ namespace Bibliotheque.Controllers
             Element element = db.Elements.Find(id);
             db.Elements.Remove(element);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Main", "Home");
         }
 
          public ActionResult List(string id)
-        {
+         {
 
-            Int32.TryParse(id, out var CatTemp);
+            Int32.TryParse(id, out IdCategory);
 
-            var elementlist = ViewModel.ElemsVM.Elements.Where(e => e.IdCategory.Equals(CatTemp));
+            var elementlist = ViewModel.ElemsVM.Elements.Where(e => e.IdCategory.Equals(IdCategory));
 
             return PartialView("Index", elementlist);
             
+         }
+
+         public ActionResult Details(int? id)
+         {
+             TempData["IdElement"] = id;
+
+            return RedirectToAction("Details", "Links");
+         }
+
+        public ActionResult LinkCre(int? id)
+        {
+             TempData["IdElement"] = id;
+
+            return RedirectToAction("Create", "Links");
         }
+
+         public ActionResult LinkDel(int? id)
+         {
+             TempData["IdElement"] = id;
+
+             return RedirectToAction("Delete", "Links");
+         }
 
         protected override void Dispose(bool disposing)
         {

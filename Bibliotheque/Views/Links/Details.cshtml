@@ -1,50 +1,40 @@
-﻿@model Bibliotheque.Models.Link
+﻿@using Bibliotheque.Models
+@using Bibliotheque.ViewModels
+@model Bibliotheque.ViewModels.BibliothequeViewModel
 
-@{
-    Layout = null;
-}
+<div>
+    <h4>@TempData["Element"]</h4>
 
-<!DOCTYPE html>
+    <dl class="dl-horizontal">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-    <div>
-        <h4>Link</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.IdUser)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.IdUser)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.IdElement)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.IdElement)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Done)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Done)
-            </dd>
-    
-        </dl>
+        @foreach (User u in (List<User>) TempData["Userlist"])
+        {
+
+            <table>
+
+            @if (Model.LinksVM.Links.Any(l => l.IdUser == u.IdUser))
+            {
+
+                <tr>
+                <th>Mail : @u.Email</th>
+                </tr>
+
+            }
+
+            @foreach (Link l in Model.LinksVM.Links.Where(l => l.IdUser == u.IdUser && l.IdElement == (int) TempData["IdElement"]))
+            {
+            <tr>
+                <th>Done : </th>
+                <th>@l.Done</th>
+            </tr>
+            }
+        
+            </table>
+        }
+
+    </dl>
+
     </div>
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.IdLink }) |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to main page", "Main", "Home")
     </p>
-</body>
-</html>
