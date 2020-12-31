@@ -38,15 +38,26 @@
 
 }
 
-@Html.DropDownListFor(m => m.CatsVM.Categories,
-    CategoriesList.OrderBy(k => k.Text),htmlAttributes: new { @id = "dropdown" })
+<div>
+    @Html.DropDownListFor(m => m.CatsVM.Categories,
+        CategoriesList.OrderBy(k => k.Text), htmlAttributes: new { @id = "dropdown" })
+</div>
+
+<div>
+
+    <input type="text" id="textbox"/>
+    <input type = "submit"
+           id="submit"
+           name = "submit"
+           value = "Search"/>
+
+</div>
 
 <body>
 
-    <div id="element_list_container">
-        List of elements :
+<div id="element_list_container">
 
-    </div>
+</div>
 
     <div>
         <button onclick="location.href = '@Url.Action("Create", "Categories")';return false;">Add a Category</button>
@@ -58,11 +69,23 @@
 
 </body>
 </html>
-
+ 
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
-<script> //Script en ajax pour modifier dynamiquement l'affichage
+<script>
+ //Script en ajax pour modifier dynamiquement l'affichage
+
+    $('#submit').click(function (e) {
+
+        $.ajax({
+            type: "POST",
+            url: "../Elements/Search",
+            data: { search: $("#textbox").val(), id: $("#dropdown option:selected").val() },
+            success: function (data) { $("#element_list_container").html(data); },
+            error: function () { alert("Something went wrong in controller."); }
+        });
+    });
 
     $('#dropdown').ready(function (e) {
 
@@ -92,6 +115,7 @@
             data: { id: row_num },
             success: function(data) {
                 $("#element_list_container").html(data);
+                $("#textbox").val("");
             },
 
             error: function () { alert("Something went wrong in controller."); }

@@ -12,12 +12,14 @@
     <title>Index</title>
 </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
         
-    @foreach (var item in Model) {
+    @foreach (var item in Model) 
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Content)
@@ -32,7 +34,6 @@
             </td>
         </tr>
     }
-    
-    </table>
+</table>
 </body>
 </html>

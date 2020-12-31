@@ -111,13 +111,21 @@ namespace Bibliotheque.Controllers
 
          public ActionResult List(string id)
          {
-
-            Int32.TryParse(id, out IdCategory);
+             Int32.TryParse(id, out IdCategory);
 
             var elementlist = ViewModel.ElemsVM.Elements.Where(e => e.IdCategory.Equals(IdCategory));
 
             return PartialView("Index", elementlist);
-            
+         }
+
+         [HttpPost]
+         public ActionResult Search(string search, string id)
+         {
+             Int32.TryParse(id, out IdCategory);
+
+             var elementlist = ViewModel.ElemsVM.Elements.Where(e => e.Content.Contains(search) && e.IdCategory.Equals(IdCategory));
+
+             return PartialView("Index", elementlist);
          }
 
          public ActionResult Details(int? id)
