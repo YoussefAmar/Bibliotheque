@@ -102,6 +102,7 @@ namespace Bibliotheque.Controllers
             {
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
+                Session["User"] = user;
                 return RedirectToAction("Main", "Home");
             }
             return View(user);
@@ -131,7 +132,8 @@ namespace Bibliotheque.Controllers
             User user = db.Users.Find(id);
             db.Users.Remove(user);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Main", "Home");
+
         }
 
         protected override void Dispose(bool disposing)

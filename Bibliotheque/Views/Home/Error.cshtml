@@ -7,7 +7,19 @@
 
 <html>
 <head>
+    <link href="~/Content/bootstrap-utilities.rtl.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <link href="/Content/Required.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/Form.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Background.css" rel="stylesheet" type="text/css"/>
+
     <meta name="viewport" content="width=device-width" />
+
     <title>Error</title>
 </head>
 <body>
@@ -15,22 +27,25 @@
         ViewBag.Title = "Error";
     }
 
-    <div style="background-color: #A52A2A; color: White; height: 10px;">
-    </div>
-    <div style="background-color: #F5F5DC; color: White; height: 170px;">
-        <div style=" padding:20px;">
-            <h3>
-                Application Error:
-            </h3>
-            <h4>
-                Sorry, an error occurred while processing your request.
-            </h4>
-            <h6>@Html.ActionLink("Go Back To Home Page", "Main", "Home")</h6>
-            <br />
-            <br />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Error</h2>
+                        <form class="form-signin">
+                            <div class="form-label-group">
+                                <text class="card-title text-center" style="color: Red; height: 15px;">
+                                    Sorry, an error occurred while processing your request.
+                                </text>
+                            </div>
+                            <hr class="my-4">
+                            <button class="btn btn-lg btn-primary" type="submit" onclick="location.href = '@Url.Action("Main", "Home")';return false;">Home</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div style="background-color: #A52A2A; color: White; height: 20px;">
     </div>
 </body>
 </html>

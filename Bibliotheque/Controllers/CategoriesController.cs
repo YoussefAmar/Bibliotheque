@@ -94,7 +94,7 @@ namespace Bibliotheque.Controllers
             {
                 db.Entry(category).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Main", "Home");
             }
             return View(category);
         }
@@ -123,7 +123,7 @@ namespace Bibliotheque.Controllers
             Category category = db.Categories.Find(id);
             db.Categories.Remove(category);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Main", "Home");
         }
 
         protected override void Dispose(bool disposing)

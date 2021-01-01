@@ -9,6 +9,19 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap-utilities.rtl.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <link href="/Content/Required.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/Form.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Background.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/table.css" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width" />
+
     <title>Index</title>
 </head>
 <body>
@@ -16,24 +29,28 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<table class="table">
-        
-    @foreach (var item in Model) 
-    {
+<table class="form-control" style="max-width: max-content; margin-left: auto; margin-right: auto">
+
+    @foreach (var item in Model)
+     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
+            <th>
+                <h5>@Html.DisplayFor(modelItem => item.Content)</h5>
+            </th>
+        </tr>
+
+        <tr>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.IdElement }) |
                 @Html.ActionLink("Details", "Details", new { id = item.IdElement }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.IdElement }) |
                 @Html.ActionLink("Do", "LinkCre", new { id = item.IdElement }) |
-                @Html.ActionLink("Undo", "LinkDel", new { id = item.IdElement }) |
-                @{Html.RenderAction("Index_Partial", "Links", new {id = item.IdElement});}
+                @Html.ActionLink("Undo", "LinkDel", new { id = item.IdElement })
             </td>
+
+            @{Html.RenderAction("Index_Partial", "Links", new { id = item.IdElement });}
         </tr>
-    }
+     }
 </table>
 </body>
 </html>

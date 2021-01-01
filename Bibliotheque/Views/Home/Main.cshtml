@@ -12,13 +12,25 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+
+    <link href="~/Content/bootstrap-utilities.rtl.min.css" rel="stylesheet"/>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet"/>
+    <script src="~/Scripts/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <link href="/Content/Required.css" rel="stylesheet" type="text/css"/>
+    <link href="/Content/Form.css" rel="stylesheet" type="text/css"/>
+    <meta name="viewport" content="width=device-width"/>
+
     <title>Main</title>
 
     <table>
         <tr>
             <th>Name</th>
             <th>Mail</th>
+            <th> @Html.ActionLink("Edit", "Edit", "Users", new {id = obj.IdUser}, new {@class = "btn"})</th>
         </tr>
         <tr>
             <td>@obj.Name</td>
@@ -41,6 +53,11 @@
 <div>
     @Html.DropDownListFor(m => m.CatsVM.Categories,
         CategoriesList.OrderBy(k => k.Text), htmlAttributes: new { @id = "dropdown" })
+
+    <input type = "submit"
+           id="edit"
+           name = "submit"
+           value = "Edit"/>
 </div>
 
 <div>
@@ -60,7 +77,10 @@
 </div>
 
     <div>
-        <button onclick="location.href = '@Url.Action("Create", "Categories")';return false;">Add a Category</button>
+        <input type = "submit"
+               id="cat"
+               name = "submit"
+               value = "Create a category"/>
     </div>
 
     <div>
@@ -69,9 +89,6 @@
 
 </body>
 </html>
- 
-<script src="~/Scripts/jquery-3.4.1.js"></script>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 <script>
  //Script en ajax pour modifier dynamiquement l'affichage
@@ -86,6 +103,34 @@
             error: function () { alert("Something went wrong in controller."); }
         });
     });
+
+ $('#cat').click(function (e) {
+
+     $.ajax({
+         type: "GET",
+         url: "../Categories/Create",
+         success: function (data) { $("#element_list_container").html(data); },
+         error: function () { alert("Something went wrong in controller."); }
+     });
+ });
+
+ $('#edit').click(function (e) {
+
+     var row_num = $("#dropdown option:selected").val();
+
+     $.ajax({
+         type: "GET",
+         url: "../Categories/Edit",
+         data: { id: row_num },
+         success: function (data) {
+             $("#element_list_container").html(data);
+         },
+
+         error: function () { alert("Something went wrong in controller."); }
+
+     });
+
+ });
 
     $('#dropdown').ready(function (e) {
 

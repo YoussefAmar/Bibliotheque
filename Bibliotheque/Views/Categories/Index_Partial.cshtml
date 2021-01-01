@@ -1,24 +1,45 @@
 ﻿@model IEnumerable<Bibliotheque.Models.Category>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.IdCategory)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-    </tr>
+<!DOCTYPE html>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.IdCategory)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-    </tr>
-}
+<header>
+    <link href="~/Content/bootstrap-utilities.rtl.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <link href="/Content/Required.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/table.css" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width" />
+</header>
 
-</table>
+<html>
+
+<body>
+    <table class="form-control" style ="max-width: max-content; margin-left: auto; margin-right: auto">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdCategory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>
