@@ -1,10 +1,19 @@
 ﻿@model IEnumerable<Bibliotheque.Models.Link>
 
+@{
+    List<SelectListItem> LinkList = new List<SelectListItem>();
+}
 
 @foreach (var item in Model)
 {
-    <td>
-        @Html.Raw(item.Done.Value.Date.ToString("dd/MM/yy"))
-    </td>
+   
+
+    LinkList.Add(new SelectListItem { Text = item.Done?.Date.ToString("dd/MM/yy")});
 }
 
+@if (LinkList.Any())
+{
+    <td>
+        @Html.DropDownList("Date",LinkList)
+    </td>
+}

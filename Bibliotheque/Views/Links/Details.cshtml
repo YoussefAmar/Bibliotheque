@@ -56,7 +56,7 @@
 
                 </table>
 
-                if (Model.LinksVM.Links.Any(l => l.IdUser == u.IdUser))
+                if (Model.LinksVM.Links.Any(l => l.IdUser == u.IdUser && l.IdElement == (int)TempData["IdElement"]))
                 {
                     <hr class="my-4">
                 }

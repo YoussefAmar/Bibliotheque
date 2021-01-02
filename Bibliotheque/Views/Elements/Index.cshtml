@@ -24,8 +24,6 @@
 </head>
 <body>
 
-@if (Model.Any())
-{
     <table class="form-control" style="max-width: max-content; margin-left: auto; margin-right: auto; margin-top: 40px">
 
         @foreach (var item in Model)
@@ -52,12 +50,14 @@
         
         <tr>
             <td>
-                <hr class="my-4">
-                @Html.ActionLink("Add an element", "Create", null ,htmlAttributes: new {@class = "btn btn-lg btn-primary" })
+                @if (Model.Any())
+                {
+                    <hr class="my-4">
+                }
+                @Html.ActionLink("Add an element", "Create", null, htmlAttributes: new {@class = "btn btn-lg btn-primary"})
             </td>
         </tr>
 
     </table>
-}
 </body>
 </html>
