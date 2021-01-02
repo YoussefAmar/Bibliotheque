@@ -23,13 +23,10 @@
     <title>Index</title>
 </head>
 <body>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 
 @if (Model.Any())
 {
-    <table class="form-control" style="max-width: max-content; margin-left: auto; margin-right: auto">
+    <table class="form-control" style="max-width: max-content; margin-left: auto; margin-right: auto; margin-top: 40px">
 
         @foreach (var item in Model)
         {
@@ -50,7 +47,16 @@
 
                 @{Html.RenderAction("Index_Partial", "Links", new { id = item.IdElement });}
             </tr>
+
         }
+        
+        <tr>
+            <td>
+                <hr class="my-4">
+                @Html.ActionLink("Add an element", "Create", null ,htmlAttributes: new {@class = "btn btn-lg btn-primary" })
+            </td>
+        </tr>
+
     </table>
 }
 </body>

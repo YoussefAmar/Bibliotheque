@@ -101,12 +101,10 @@ namespace Bibliotheque.Controllers
 
         // GET: Categories/Delete/5
         [NoDirectAccess]
-        public ActionResult Delete(int? id)
+        public ActionResult Delete()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            int id = (int) TempData["IdCategory"];
+
             Category category = db.Categories.Find(id);
             if (category == null)
             {
@@ -115,10 +113,7 @@ namespace Bibliotheque.Controllers
             return View(category);
         }
 
-        // POST: Categories/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int? id)
         {
             Category category = db.Categories.Find(id);
             db.Categories.Remove(category);

@@ -30,61 +30,77 @@
     <link href="/Content/Required.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/Background.css" rel="stylesheet" type="text/css" />
     <link href="/Content/Form.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/table.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width" />
 
     <title>Main</title>
 
-    <table>
+    <table style="margin-left: auto; background-color:darkslateblue; max-width: max-content; height: 10px;">
+        <tr>
+            <th>
+                @obj.Name
+            </th>
 
-        <thead>@obj.Name</thead>
+            <th> @Html.ActionLink("Profile", "Edit", "Users", new { id = obj.IdUser }, new { @class = "btn" })</th>
+            <th>@Html.ActionLink("Log Out", "Disconnect", "Home", new { id = obj.IdUser }, new { @class = "btn" })</th>
+        </tr>
+    </table>
+
+    <table class="form-control" style="max-width: max-content; background-color: darkorange; height: 75px; color: whitesmoke;">
 
         <tr>
-            <th> @Html.ActionLink("Edit", "Edit", "Users", new { id = obj.IdUser }, new { @class = "btn" })</th>
+            <th>
+                <input type="submit"
+                       id="cat"
+                       name="submit"
+                       class="btn"
+                       value="Create category" />
+            </th>
+
+            @if (CategoriesList.Any())
+            {
+                <th>
+                    <input type="submit"
+                           id="edit"
+                           name="submit"
+                           class="btn"
+                           value="Edit category" />
+                </th>
+                <th>
+
+                    <input type="submit"
+                           id="delete"
+                           name="submit"
+                           class="btn"
+                           value="Delete category" />
+                </th>
+
+                <th>
+                    @Html.DropDownListFor(m => m.CatsVM.Categories,
+                        CategoriesList.OrderBy(k => k.Text), htmlAttributes: new { @id = "dropdown", @class = "dropdown" })
+                </th>
+
+                <th>
+                    <input type="text" class="form-control" id="textbox" />
+                </th>
+                <th>
+                    <input type="submit"
+                           id="submit"
+                           name="submit"
+                           class="form-control"
+                           value="Search" />
+                </th>
+            }
         </tr>
     </table>
 
 </head>
-
-<div>
-    @if (CategoriesList.Any())
-    {
-        
-        @Html.DropDownListFor(m => m.CatsVM.Categories,
-            CategoriesList.OrderBy(k => k.Text), htmlAttributes: new {@id = "dropdown"})
-    }
-
-    <input type="submit"
-           id="edit"
-           name="submit"
-           value="Edit"/>
-</div>
-
-<div>
-
-    <input type="text" id="textbox"/>
-    <input type = "submit"
-           id="submit"
-           name = "submit"
-           value = "Search"/>
-
-</div>
 
 <body>
 
 <div id="element_list_container">
 
 </div>
-
-    <div>
-        <input type = "submit"
-               id="cat"
-               name = "submit"
-               value = "Create a category"/>
-    </div>
-
-    <div>
-        <button onclick="location.href = '@Url.Action("Disconnect", "Home")';return false;">Log out</button>
-    </div>
 
 </body>
 </html>
@@ -131,7 +147,22 @@
 
  });
 
-    $('#dropdown').ready(function (e) {
+    $('#delete').click(function (e) {
+
+        $.ajax({
+            type: "GET",
+            url: "../Categories/Delete",
+            success: function (data) {
+                $("#element_list_container").html(data);
+            },
+
+            error: function () { alert("Something went wrong in controller."); }
+
+        });
+
+    });
+
+ $('#dropdown').ready(function (e) {
 
         var row_num = $("#dropdown option:selected").val();
 

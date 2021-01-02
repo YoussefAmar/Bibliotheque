@@ -115,6 +115,8 @@ namespace Bibliotheque.Controllers
 
             var elementlist = ViewModel.ElemsVM.Elements.Where(e => e.IdCategory.Equals(IdCategory));
 
+            TempData["IdCategory"] = IdCategory;
+
             return PartialView("Index", elementlist);
          }
 

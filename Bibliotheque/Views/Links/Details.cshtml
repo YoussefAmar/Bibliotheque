@@ -56,7 +56,11 @@
 
                 </table>
 
-                <hr class="my-4">
+                if (Model.LinksVM.Links.Any(l => l.IdUser == u.IdUser))
+                {
+                    <hr class="my-4">
+                }
+
              }
 
             <button class="btn btn-lg btn-primary" type="submit" onclick="location.href = '@Url.Action("Main", "Home")';return false;">Home</button>
