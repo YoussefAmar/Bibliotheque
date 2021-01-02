@@ -67,7 +67,8 @@ namespace Bibliotheque.Controllers
                 {
                     db.Users.Add(user);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    Session["User"] = user;
+                    return RedirectToAction("Main", "Home");
                 }
 
             }
